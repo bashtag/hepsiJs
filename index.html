@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Üye Giriş Sayfası & Üye Ol - Hepsiburada</title>
+		<!-- Hepsiburada Icon -->
+		<link rel="icon" href="https://images.hepsiburada.net/assets/sfstatic/Content/images/favicon.ico" type="image/x-icon">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+		<link rel="stylesheet" href="styles/indexstyle.css">
+	</head>
+	<body>
+		<!-- Main Container -->
+		<div class="container text-center">
+			<!-- Page Jumbotron -->
+			<div class="jumbotron mt-5 mb-3">
+				<h1 class="fs-2 fw-bold">hepsiburada</h1>
+			</div>
+
+			<!-- Authanticate -->
+			<div class="row mx-auto my-5" style="width: 500px;">
+				<span class="border rounded p-5">
+					<form>
+						<!-- Radio Button Group to Sign In/Up -->
+						<div class="btn-group m-3" role="group" data-toggle="buttons" id="signRadios">
+							<input type="radio" class="btn-check" name="btnRadio" id="signInRadio" autocomplete="off" checked>
+							<label class="btn" for="signInRadio" id="signInLabelId">Giriş yap</label>
+
+							<input type="radio" class="btn-check" name="btnRadio" id="signUpRadio" autocomplete="off">
+							<label class="btn" for="signUpRadio" id="signUpLabelId">Üye ol</label>
+						</div>
+
+						<!-- Input For Email or Telephone Number -->
+						<div class="form-group my-2 mx-4" id="mailInputGroup">
+							<input type="text" class="form-control form-control-hover" id="noMailInput" placeholder="E-posta adresi veya telefon numarası">
+						</div>
+
+						<!-- Submit Button -->
+						<button class="btn my-4" id="signInSubmit" type="submit">Giriş yap</button>
+					</form>
+				</span>
+			</div>
+
+			<!-- Authantice with Different Methods -->
+			<div class="row">
+				<h1 class="display-4">Different Methods</h1>
+			</div>
+		</div>
+
+		<!-- Bootstrap Scripts -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+	</body>
+</html>
