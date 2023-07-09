@@ -15,5 +15,8 @@
 	"bugs": {
 		"url": "https://github.com/bashtag/hepsiJs/issues"
 	},
-	"homepage": "https://github.com/bashtag/hepsiJs#readme"
+	"homepage": "https://github.com/bashtag/hepsiJs#readme",
+	"dependencies": {
+		"bootstrap": "^5.3.0"
+	}
 }
