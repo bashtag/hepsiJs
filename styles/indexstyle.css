@@ -5,7 +5,8 @@
 	--radioBtn-font-color: #484848;
 	--mailInput-font-color: #757575;
 	--mailInput-hover-color: #F5F5F5;
-	--main-radius: 10px
+	--main-radius: 10px;
+	--submitBtn-hover-color: #E35600;
 }
 
 /* Page Jumbotron */
@@ -39,7 +40,7 @@
 }
 
 #noMailInput:hover{
-	color: var(--mailInput-hover-color);
+	background-color: var(--mailInput-hover-color);
 }
 
 /* Submit button */
@@ -50,4 +51,8 @@
 	width: 350px;
 	height: 60px;
 	--bs-btn-border-radius: var(--main-radius);
+}
+
+#signInSubmit:hover{
+	background-color: var(--submitBtn-hover-color);
 }
