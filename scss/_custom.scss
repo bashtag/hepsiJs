@@ -1,0 +1,36 @@
+// bootstrap
+@import	"../node_modules/bootstrap/scss/bootstrap.scss";
+
+// MY THEME COLORS
+$orange: #ff6000;
+// Submit Button Hover BG Color
+$orange-dark: #e35600;
+
+// scss-docs-start gray-color-variables
+
+$white:    #fff !default;
+
+// Mail Input Hover BG Color
+$gray-100: #f5f5f5 !default;
+
+// Radio Button Active Color
+$gray-200: #eeeeee !default;
+
+// Different Methods Buttons
+$gray-300: #cccccc !default;
+
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+
+// Mail Input Font Color
+$gray-600: #757575 !default;
+
+// Radio Button Font Color
+$gray-700: #484848 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+$primary: $orange;
+
+$border-radius: 10px;
