@@ -1,0 +1,5 @@
+@use "../custom" as *;
+
+.main {
+	@include	make-container(850px);
+}
