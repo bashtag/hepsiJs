@@ -1,0 +1,22 @@
+{
+	"name": "authentication",
+	"version": "1.0.0",
+	"description": "Hepsiburada Log In and Sign Up Clone with Bootstrap and JS",
+	"main": "index.js",
+	"scripts": {
+		"test": "live-server --port=8080 --entry-file=index.html"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bashtag/hepsiJs.git"
+	},
+	"author": "bashtag",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/bashtag/hepsiJs/issues"
+	},
+	"homepage": "https://github.com/bashtag/hepsiJs#readme",
+	"dependencies": {
+		"bootstrap": "^5.3.0"
+	}
+}

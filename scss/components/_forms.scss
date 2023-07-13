@@ -1,0 +1,16 @@
+@use "../custom" as *;
+
+// Email-No Input
+.emailForm {
+	height: 55px;
+	background-color: $gray-200;
+	font-size: large;
+
+	&::placeholder {
+		color: $gray-600;
+	}
+
+	&:hover {
+		background-color: $gray-100;
+	}
+}

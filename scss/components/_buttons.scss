@@ -1,0 +1,58 @@
+@use "../custom" as *;
+
+// Radio Label
+.signRadioLabel {
+	@include	button-variant(
+		$gray-200,
+		$gray-200,
+		$active-background: white
+	);
+	font-weight: 700;
+	padding: 0.6rem 3.6rem 0.6rem 3.6rem;
+	border-width: 2px;
+}
+
+// Submit Button
+.submit {
+	background-color: $primary;
+	color: white;
+	font-weight: 600;
+	width: 350px;
+	height: 60px;
+	
+	&:hover{
+		background-color: $orange-dark;
+		color: white;
+	}
+}
+
+// Help Button
+.help {
+	@include	button-variant(
+		white,
+		white,
+		$color: $primary
+	);
+
+	font-weight: 700;
+	font-size: 14px;
+	margin-top: -12px;
+	margin-bottom: 30px;
+
+	&:hover {
+		color: $orange-dark;
+	}
+}
+
+// Different Methods
+.social-ico-btn {
+	color: black;
+	font-weight: 600;
+	border-width: 3px;
+	border-color: $gray-300;
+
+	&:hover {
+		background-color: $gray-100;
+		color: $primary;
+	}
+}
