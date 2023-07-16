@@ -25,28 +25,8 @@ export default class	SignBtn{
 		let	isNumber = !Number.isNaN(inputText);
 
 		if (this.#page)
-			this.#signIn(inputText, isNumber);
+			new SignInService(this.#customerService, this.#loggerService, inputText, isNumber);
 		else
-			this.#signUp(inputText, isNumber);
-	}
-
-	#signIn(inputText, isNumber) {
-		let	signInService = new SignInService(this.#customerService, this.#loggerService);
-
-		if (isNumber) {
-			if (signInService.checkNumberValidity(inputText)) {
-
-			}
-			else {
-				
-			}
-		}
-		else if (signInService.checkEmailValidity(inputText)) {
-
-		}
-	}
-
-	#signUp(inputText, isNumber) {
-		let signUpService = new SignUpService(this.#customerService, this.#loggerService);
+			new SignUpService(this.#customerService, this.#loggerService, inputText, isNumber);
 	}
 }
