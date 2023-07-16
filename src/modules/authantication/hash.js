@@ -6,12 +6,6 @@ import { hashes } from "../../data/hashes.js";
 export default class	Hash {
 	/* Privates */
 
-	// Hash Code of Password
-	#hashPass;
-
-	// Id of the owner of password
-	#id;
-
 	// Logger Service
 	#loggerService
 
@@ -25,17 +19,13 @@ export default class	Hash {
 	 * @param {*} loggerService 
 	 */
 	constructor(id, password, loggerService) {
-		this.#id = id;
-		this.#loggerService = loggerService;
-		this.#hashPass = this.#calculateHash(password);
-	}
+		// id of the customer
+		this.id = id;
 
-	/**
-	 * 
-	 * @returns Hashcode for password
-	 */
-	getHash() {
-		return (this.#hashPass);
+		this.#loggerService = loggerService;
+
+		// hashed password
+		this.hashPass = this.#calculateHash(password);
 	}
 
 	/**
@@ -56,8 +46,8 @@ export default class	Hash {
 	 */
 	isThereMatchingIdOrHash() {
 		for (const hash of hashes) {
-			if (hash[0] == this.#id ||
-				hash[1] == this.#hashPass) {
+			if (hash[0] == this.id ||
+				hash[1] == this.hashPass) {
 				this.#errors.push(new DataError("id or hash not suitable."));
 				return (true);
 			}
