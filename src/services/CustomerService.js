@@ -1,7 +1,9 @@
-import { hashes } from "../data/hashes"
-import { users } from "../data/users"
-import Hash from "../modules/authantication/hash"
-import Customer from "../modules/customer"
+import BaseLogger from "../crossCuttingConcerns/logging/baselogger.js"
+import { hashes } from "../data/hashes.js"
+import { users } from "../data/users.js"
+import Hash from "../modules/authantication/hash.js"
+import Customer from "../modules/customer.js"
+import DataError from "../modules/errorTypes/dataError.js"
 
 export default class	CustomerService {
 	// Private Members
@@ -17,9 +19,10 @@ export default class	CustomerService {
 	// A log service for logging
 	#loggerService
 
+
 	/**
 	 * 
-	 * @param {string} inputText 
+	 * @param {BaseLogger} loggerService 
 	 */
 	constructor(loggerService) {
 		this.#loggerService = loggerService
@@ -30,10 +33,10 @@ export default class	CustomerService {
 	 * load data in users.js and hashes.js
 	 */
 	#load() {
-		for (const user in users)
+		for (const user of users)
 			this.#addCustomers(user);
 		
-		for (const hash in hashes)
+		for (const hash of hashes)
 			this.#addHashes(hash);
 	}
 
@@ -45,7 +48,7 @@ export default class	CustomerService {
 		if (!this.#checkCustomerValidityForErrors(customer))
 			this.#customers.push(customer);
 
-		this.#loggerService.log(customer);
+		this.#loggerService.addLog(customer);
 	}
 
 	/**
@@ -54,12 +57,12 @@ export default class	CustomerService {
 	 * @param {Customer} customer 
 	 */
 	#checkCustomerValidityForErrors(customer) {
-		let	required = "id firstName lastName email number birthDate city "
+		let	required = "id firstName lastName email number birthDate city"
 		let	requiredFields = required.split(" ");
 		let	hasErrors = false;
 
 		for (const field of requiredFields) {
-			if (!customer[field]) {
+			if (customer[field] === undefined) {
 				hasErrors = true;
 				this.#errors.push(new DataError(`Validation problem ${field} is required.`, customer));
 			}
@@ -67,7 +70,7 @@ export default class	CustomerService {
 
 		if (Number.isNaN(Number.parseInt(+customer.number))) {
 			hasErrors = true;
-			this.#errors.push(`Validation problem. ${customer.number} is not a number.`, customer);
+			this.#errors.push(new DataError(`Validation problem. ${customer.number} is not a number.`, customer));
 		}
 
 		return (hasErrors);
@@ -81,7 +84,7 @@ export default class	CustomerService {
 		if (!this.#checkHashValidityForErrors(hash))
 			this.#passwdHashes.push(hash);
 
-		this.#loggerService.log(hash);
+		this.#loggerService.addLog(hash);
 	}
 
 	/**
@@ -91,14 +94,14 @@ export default class	CustomerService {
 	#checkHashValidityForErrors(hash) {
 		let	hasErrors = false;
 
-		if (!hash["id"]) {
+		if (hash["id"] === undefined) {
 			hasErrors = true;
 			this.#errors.push(new DataError(`Validation problem id is required.`, hash));
 		}
 
-		if (Number.isNaN(hash.getHash())) {
+		if (Number.isNaN(hash.hashPass)) {
 			hasErrors = true;
-			this.#errors.push(new DataError(`Validation problem ${hash.getHash()} is not a number.`, hash));
+			this.#errors.push(new DataError(`Validation problem ${hash.hashPass} is not a number.`, hash));
 		}
 
 		return (hasErrors);
