@@ -1,43 +1,68 @@
+import BaseLogger from "../../crossCuttingConcerns/logging/baselogger.js";
+import CustomerService from "../CustomerService.js";
+import Check from "../../modules/authantication/check.js";
+
 export default class	SignInService {
-	constructor(customerService, loggerService) {
 
-	}
+	#customerService
 
-	logIn(inputText) {
+	#loggerService
 
-	}
-	
-	/**
-	 * The email is valid or not.
-	 * A regex algorithm is used
-	 * @param {string} inputText 
-	 * @returns boolean
-	 */
-	checkEmailValidity(inputText) {
-		let hasErrors = inputText.match(
-			/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-		) != null;
-
-		// if (hasErrors)
-		// 	this.#errors.push(new DataError("Wrong Email Type:", inputText));
-
-		return (hasErrors);
-	}
+	#inputText
 
 	/**
-	 * If the number is valid or not.
-	 * A regex algorithm is used
+	 * 
+	 * @param {CustomerService} customerService 
+	 * @param {BaseLogger} loggerService 
 	 * @param {string} inputText 
-	 * @returns boolean
+	 * @param {number} isNumber 
 	 */
-	checkNumberValidity(inputText) {
-		let	hasErrors = inputText.match(
-			/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
-		) != null;
+	constructor(customerService, loggerService, inputText, isNumber) {
+		this.#customerService = customerService;
+		this.#loggerService = loggerService;
 
-		// if (hasErrors)
-		// 	this.#errors.push(new DataError("Wrong Number Type:" + inputText));
+		if (isNumber)
+			this.#emailLogIn(inputText);
+		else
+			this.#numberLogIn(inputText);
+	}
 
-		return (hasErrors);
+	#emailLogIn(inputText) {
+		if (Check.checkEmailValidity(inputText)) {
+			this.#generatePasswordScene();
+
+
+		}
+		else
+			this.#generateWrongInput();
+	}
+
+	#numberLogIn(inputText) {
+		if (Check.checkNumberValidity(inputText)) {
+			this.#generatePasswordScene();
+			
+		}
+		else
+			this.#generateWrongInput();
+	}
+
+	#generatePasswordScene() {
+
+	}
+
+	#generateWrongInput() {
+		if (!this.#isThereWrongInputText()) {
+			let	wrongInputText = document.createElement("p");
+			wrongInputText.classList.add("text-danger", "fw-semibold");
+			wrongInputText.innerText = "E-Mail veya Numara Hatalı";
+			wrongInputText.id = "wrongInputText"
+			
+			let	formCol = document.getElementById("mailInputGroup").parentElement;
+			formCol.appendChild(wrongInputText);
+		}
+	}
+
+	#isThereWrongInputText() {
+		return (document.getElementById("wrongInputText") != null);
 	}
 }
