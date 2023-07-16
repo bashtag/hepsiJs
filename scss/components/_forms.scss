@@ -5,6 +5,12 @@
 	height: 55px;
 	background-color: $gray-200;
 	font-size: large;
+	// border-color: red;
+	// border-width: 3px;
+
+	&:focus {
+		border-color: $orange;
+	}
 
 	&::placeholder {
 		color: $gray-600;
