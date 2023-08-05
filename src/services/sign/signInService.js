@@ -1,14 +1,8 @@
 import BaseLogger from "../../crossCuttingConcerns/logging/baselogger.js";
 import CustomerService from "../CustomerService.js";
-import Check from "../../modules/authantication/check.js";
+import SignService from "./SignService.js";
 
-export default class	SignInService {
-
-	#customerService
-
-	#loggerService
-
-	#inputText
+export default class	SignInService extends SignService {
 
 	/**
 	 * 
@@ -18,51 +12,16 @@ export default class	SignInService {
 	 * @param {number} isNumber 
 	 */
 	constructor(customerService, loggerService, inputText, isNumber) {
-		this.#customerService = customerService;
-		this.#loggerService = loggerService;
-
-		if (isNumber)
-			this.#emailLogIn(inputText);
-		else
-			this.#numberLogIn(inputText);
+		super(customerService, loggerService, inputText, isNumber);
 	}
 
-	#emailLogIn(inputText) {
-		if (Check.checkEmailValidity(inputText)) {
-			this.#generatePasswordScene();
-
-
-		}
-		else
-			this.#generateWrongInput();
-	}
-
-	#numberLogIn(inputText) {
-		if (Check.checkNumberValidity(inputText)) {
-			this.#generatePasswordScene();
-			
-		}
-		else
-			this.#generateWrongInput();
-	}
-
-	#generatePasswordScene() {
-
-	}
-
-	#generateWrongInput() {
-		if (!this.#isThereWrongInputText()) {
-			let	wrongInputText = document.createElement("p");
-			wrongInputText.classList.add("text-danger", "fw-semibold");
-			wrongInputText.innerText = "E-Mail veya Numara Hatalı";
-			wrongInputText.id = "wrongInputText"
-			
-			let	formCol = document.getElementById("mailInputGroup").parentElement;
-			formCol.appendChild(wrongInputText);
-		}
-	}
-
-	#isThereWrongInputText() {
-		return (document.getElementById("wrongInputText") != null);
+	/**
+	 * Auth scene for sign in.
+	 * Pure Virtual Method.
+	 */
+	generateAuthScene() {
+		console.log("sign in");
+		let	authHtml = document.createElement("form");
+		authHtml.innerHTML
 	}
 }
