@@ -6,14 +6,6 @@ import Check from "../../modules/authantication/check.js";
  * an abstract class
  */
 export default class	SignService {
-	// Privates
-
-	#customerService
-
-	#loggerService
-
-	#inputText
-
 	/**
 	 * Construct a sign service.
 	 * CustomerService for user validation.
@@ -25,8 +17,9 @@ export default class	SignService {
 	 * @param {number} isNumber 
 	 */
 	constructor(customerService, loggerService, inputText, isNumber) {
-		this.#customerService = customerService;
-		this.#loggerService = loggerService;
+		this.customerService = customerService;
+		this.loggerService = loggerService;
+		this.inputText = inputText;
 
 		if (isNumber)
 			this.#emailLog(inputText);
