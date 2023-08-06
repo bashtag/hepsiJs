@@ -20,8 +20,41 @@ export default class	SignInService extends SignService {
 	 * Pure Virtual Method.
 	 */
 	generateAuthScene() {
-		console.log("sign in");
-		let	authHtml = document.createElement("form");
-		authHtml.innerHTML
+
+		this.addWelcomeHeader()
+		
+		this.addEmailText();
+
+		// this.#addRefreshPage();
+
+		// this.#addPasswdInput();
+	}
+
+	addEmailText() {
+		// Email Text
+		let	emailText = document.createElement("p");
+		emailText.className = "fs-5";
+		emailText.innerText = this.inputText;
+
+		console.log(this.inputText)
+
+		// row and column tags for emailText
+	}
+
+	/**
+	 * To add welcome header for auth scene
+	 */
+	addWelcomeHeader() {
+		// Welcome Header
+		let	welcomeHeader = document.createElement("h1");
+		welcomeHeader.classList.add(["fs-3"]);
+		welcomeHeader.innerText = "Hoş Geldiniz!";
+
+		// Get the radio buttons
+		let	radioButtons = document.getElementById("signRadios");
+
+		// Change Radio Button to Welcome Header
+		if (radioButtons != null)
+			radioButtons.parentNode.replaceChild(welcomeHeader, radioButtons);
 	}
 }
