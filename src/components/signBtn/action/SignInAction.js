@@ -38,7 +38,20 @@ export default class	SignInAction extends SignAction {
 
 		console.log(this.inputText)
 
-		// row and column tags for emailText
+		// row
+		let	rowDiv = document.createElement("div");
+		rowDiv.classList.add(["row", "justify-content-center"]);
+		
+		// col
+		let	colDiv = document.createElement("div");
+		colDiv.classList.add(["col"])
+
+		// append email text
+		colDiv.appendChild(emailText);
+
+		// get form
+		let	authForm = document.getElementById("authForm");
+		
 	}
 
 	/**
@@ -56,5 +69,6 @@ export default class	SignInAction extends SignAction {
 		// Change Radio Button to Welcome Header
 		if (radioButtons != null)
 			radioButtons.parentNode.replaceChild(welcomeHeader, radioButtons);
+
 	}
 }
