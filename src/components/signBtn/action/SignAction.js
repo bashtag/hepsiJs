@@ -1,11 +1,11 @@
-import BaseLogger from "../../crossCuttingConcerns/logging/baselogger.js";
-import CustomerService from "../CustomerService.js";
-import Check from "../../modules/authantication/check.js";
+import BaseLogger from "../../../crossCuttingConcerns/logging/baselogger.js";
+import CustomerService from "../../../services/CustomerService.js";
+import Check from "../../../modules/authantication/check.js";
 
 /**
  * an abstract class
  */
-export default class	SignService {
+export default class	SignAction {
 	/**
 	 * Construct a sign service.
 	 * CustomerService for user validation.
@@ -20,6 +20,10 @@ export default class	SignService {
 		this.customerService = customerService;
 		this.loggerService = loggerService;
 		this.inputText = inputText;
+
+		// if there is a wrong input text, delete it
+		if (this.#isThereWrongInputText())
+			document.getElementById("wrongInputText").remove();
 
 		if (isNumber)
 			this.#emailLog(inputText);

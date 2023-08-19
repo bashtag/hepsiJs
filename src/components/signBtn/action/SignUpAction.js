@@ -1,8 +1,8 @@
-import BaseLogger from "../../crossCuttingConcerns/logging/baselogger.js";
-import CustomerService from "../CustomerService.js";
-import SignService from "./SignService.js";
+import BaseLogger from "../../../crossCuttingConcerns/logging/baselogger.js";
+import CustomerService from "../../../services/CustomerService.js";
+import SignAction from "./SignAction.js";
 
-export default class	SignUpService extends SignService {
+export default class	SignUpAction extends SignAction {
 	
 	/**
 	 * 
