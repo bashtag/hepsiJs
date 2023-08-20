@@ -9,10 +9,6 @@ export default class	SignBtn{
 
 	// in-up info
 	#page;
-	// Customer Service
-	#customerService;
-	// Logger Service
-	#loggerService
 	// Errors
 	#errors = []
 
@@ -25,9 +21,23 @@ export default class	SignBtn{
 	 */
 	constructor(page, customerService, loggerService) {
 		this.#page = page;
-		this.#customerService = customerService;
-		this.#loggerService = loggerService;
-		document.getElementById("signInSubmit").addEventListener("click", this.#signInUp.bind(this));
+		this.customerService = customerService;
+		this.loggerService = loggerService;
+		this.boundInUp = this.signInUp.bind(this);
+		this.boundInUpEnter = function(event) {
+			if (event.key == "Enter")
+				this.boundInUp()
+		}.bind(this)
+
+		// sign button
+		document.getElementById("signInSubmit").addEventListener("click", this.boundInUp);
+		// enter key event
+		document.getElementById("noMailInput").addEventListener("keyup", this.boundInUpEnter)
+
+		// form enter key event was reloading the page before this code
+		document.getElementById("authForm").addEventListener("submit", function(event) {
+			event.preventDefault();
+		});
 	}
 
 	/**
@@ -36,13 +46,13 @@ export default class	SignBtn{
 	 * Checks the input text includes only numbers.
 	 * Creates a Service Object.
 	 */
-	#signInUp() {
+	signInUp() {
 		let	inputText = document.getElementById("noMailInput").value;
-		let	isNumber = !Number.isNaN(inputText);
+		let	isNumber = !isNaN(inputText);
 
 		if (this.#page.isSignIn())
-			new SignInAction(this.#customerService, this.#loggerService, inputText, isNumber);
+			new SignInAction(this, inputText, isNumber);
 		else
-			new SignUpAction(this.#customerService, this.#loggerService, inputText, isNumber);
+			new SignUpAction(this, inputText, isNumber);
 	}
 }
