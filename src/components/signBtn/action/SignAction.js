@@ -6,6 +6,12 @@ import Check from "../../../modules/authantication/check.js";
  * an abstract class
  */
 export default class	SignAction {
+	// for remove event listener
+	#signBtn
+
+	// for find method
+	#isNumber
+
 	/**
 	 * Construct a sign service.
 	 * CustomerService for user validation.
@@ -16,41 +22,71 @@ export default class	SignAction {
 	 * @param {string} inputText 
 	 * @param {number} isNumber 
 	 */
-	constructor(customerService, loggerService, inputText, isNumber) {
-		this.customerService = customerService;
-		this.loggerService = loggerService;
+	constructor(signBtn, inputText, isNumber) {
+		this.customerService = signBtn.customerService;
+		this.loggerService = signBtn.loggerService;
 		this.inputText = inputText;
+		this.#isNumber = isNumber;
+		this.#signBtn = signBtn;
 
 		// if there is a wrong input text, delete it
-		if (this.#isThereWrongInputText())
-			document.getElementById("wrongInputText").remove();
+		SignAction.removeWrongInputText();
 
 		if (isNumber)
-			this.#emailLog(inputText);
+			this.#loggin(Check.checkNumberValidity);
 		else
-			this.#numberLog(inputText);
+			this.#loggin(Check.checkEmailValidity);
 	}
 
 	/**
-	 * A sign operation using email
-	 * @param {string} inputText 
+	 * Find the customer from customerList using CustomerService
+	 * @returns a customer or undefined
 	 */
-	#emailLog(inputText) {
-		if (Check.checkEmailValidity(inputText))
-			this.generateAuthScene();
-		else
-			this.#generateWrongInput();
+	#findObject() {
+		let	customer;
+		
+		if (this.#isNumber) {
+			customer = this.customerService.getCustomerList().find(function(customer) {
+					if (customer.number == this.inputText)
+						return (true);
+					return (false);
+				}.bind(this))
+		}
+		else {
+			customer = this.customerService.getCustomerList().find(function(customer) {
+					if (customer.email == this.inputText)
+						return (true);
+					return (false);
+				}.bind(this))
+		}
+		
+		return (customer);
 	}
 
 	/**
-	 * A sign operation with number
+	 * Sign operation.
+	 * It changes whether it will be with email or number depends on the checker function.
 	 * @param {string} inputText 
+	 * @param {function} checker 
 	 */
-	#numberLog(inputText) {
-		if (Check.checkNumberValidity(inputText))
-			this.generateAuthScene();
+	#loggin(checker) {
+		if (checker(this.inputText)) {
+			this.customer = this.#findObject();
+			if (this.customer) {
+				this.customerHash = this.customerService.getHashList().find(function(customer) {
+						if (customer.id == this.customer.id)
+							return (true);
+						return (false);
+					}.bind(this));
+				document.getElementById("signInSubmit").removeEventListener("click", this.#signBtn.boundInUp);
+				document.getElementById("noMailInput").removeEventListener("keyup", this.#signBtn.boundInUpEnter)
+				this.generateAuthScene();
+			}
+			else
+				SignAction.generateWrongInput("E-Mail veya Numara Eksik");
+		}
 		else
-			this.#generateWrongInput();
+			SignAction.generateWrongInput("E-Mail veya Numara Hatalı");
 	}
 
 	/**
@@ -63,12 +99,13 @@ export default class	SignAction {
 
 	/**
 	 * Generate a wrong input scene below the input
+	 * @param {string} msg 
 	 */
-	#generateWrongInput() {
-		if (!this.#isThereWrongInputText()) {
+	static	generateWrongInput(msg) {
+		if (!SignAction.isThereWrongInputText()) {
 			let	wrongInputText = document.createElement("p");
 			wrongInputText.classList.add("text-danger", "fw-semibold");
-			wrongInputText.innerText = "E-Mail veya Numara Hatalı";
+			wrongInputText.innerText = msg;
 			wrongInputText.id = "wrongInputText"
 			
 			let	formCol = document.getElementById("mailInputGroup").parentElement;
@@ -80,7 +117,15 @@ export default class	SignAction {
 	 * 
 	 * @returns if there is any error, returns true
 	 */
-	#isThereWrongInputText() {
+	static	isThereWrongInputText() {
 		return (document.getElementById("wrongInputText") != null);
+	}
+
+	/**
+	 * Remove the wrong input text if it is existing
+	 */
+	static	removeWrongInputText() {
+		if (SignAction.isThereWrongInputText())
+			document.getElementById("wrongInputText").remove();
 	}
 }
