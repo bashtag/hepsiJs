@@ -25,14 +25,16 @@ export default class	Hash {
 		this.#loggerService = loggerService;
 
 		// hashed password
-		this.hashPass = this.#calculateHash(password);
+		this.hashPass = Hash.calculateHash(password);
+
+		this.isSuitable = this.#isThereMatchingIdOrHash();
 	}
 
 	/**
 	 * Calculate the hash
 	 * @param {string} password 
 	 */
-	#calculateHash(password) {
+	static	calculateHash(password) {
 		let asciiSum = password.split('')
 			.reduce((acc, char) => {
 				return acc + char.charCodeAt(0);
@@ -44,7 +46,7 @@ export default class	Hash {
 	 * Catch the matching id or hash
 	 * @returns if there is return true, otherwise false
 	 */
-	isThereMatchingIdOrHash() {
+	#isThereMatchingIdOrHash() {
 		for (const hash of hashes) {
 			if (hash[0] == this.id ||
 				hash[1] == this.hashPass) {
