@@ -20,3 +20,9 @@
 		background-color: $gray-100;
 	}
 }
+
+// list group item hover colour
+.list-group-item:hover {
+	background-color: $orange;
+	color: $gray-100;
+}
