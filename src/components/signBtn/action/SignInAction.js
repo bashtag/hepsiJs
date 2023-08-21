@@ -71,9 +71,51 @@ export default class	SignInAction extends SignAction {
 		document.getElementById("signInSubmit").removeEventListener("click", this.boundAuth);
 		document.getElementById("passwdInput").removeEventListener("keyup", this.boundAuthEnter);
 
-		let	mainContainer = document.getElementsByClassName("container")[0];
+		// remove all elements but hepsiburada header
+		document.getElementById("auth").remove();
+		document.getElementById("authDiff").remove();
 
-		console.log("(DEBUG) Congrats!");
+		/* display identity */
+
+		// list items
+		let	liFirstName = document.createElement("li");
+		liFirstName.innerText = "First Name: " + this.customer.firstName;
+		liFirstName.classList.add("list-group-item")
+		let	liLastName = document.createElement("li");
+		liLastName.innerText = "Last Name: " + this.customer.lastName;
+		liLastName.classList.add("list-group-item")
+		let	liEmail = document.createElement("li");
+		liEmail.innerText = "Email: " + this.customer.email;
+		liEmail.classList.add("list-group-item")
+		let	liNumber = document.createElement("li");
+		liNumber.innerText = "Number: " + this.customer.number;
+		liNumber.classList.add("list-group-item")
+		let	liBirthDate = document.createElement("li");
+		liBirthDate.innerText = "Birth Year: " + this.customer.birthDate;
+		liBirthDate.classList.add("list-group-item")
+		let	liCity = document.createElement("li");
+		liCity.innerText = "City: " + this.customer.city;
+		liCity.classList.add("list-group-item")
+
+		// unordered list
+		let	uList = document.createElement("ul");
+		uList.classList.add("list-group");
+		uList.append(liFirstName, liLastName, liEmail, liNumber, liBirthDate, liCity);
+
+		// row
+		let	rowDiv = document.createElement("div");
+		rowDiv.classList.add(["row", "align-items-center", "vh-100"]);
+
+		// col
+		let	colDiv = document.createElement("div");
+		colDiv.classList.add(["col"]);
+
+		// childs are connected
+		rowDiv.appendChild(colDiv);
+		colDiv.appendChild(uList);
+
+		let	containerDiv = document.getElementsByClassName("container")[0];
+		containerDiv.appendChild(rowDiv);
 	}
 	
 	/**
