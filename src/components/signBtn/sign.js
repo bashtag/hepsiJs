@@ -1,6 +1,7 @@
 import BaseLogger from "../../crossCuttingConcerns/logging/baselogger.js";
 import Page from "../../modules/page.js";
 import CustomerService from "../../services/CustomerService.js";
+import WrongInputTextComponent from "../wrongText/wrongInputText.js";
 import SignInAction from "./action/SignInAction.js"
 import SignUpAction from "./action/SignUpAction.js"
 
@@ -23,6 +24,7 @@ export default class	SignBtn{
 		this.#page = page;
 		this.customerService = customerService;
 		this.loggerService = loggerService;
+		this.wrongInputTextComp = new WrongInputTextComponent(this.loggerService);
 		this.boundInUp = this.signInUp.bind(this);
 		this.boundInUpEnter = function(event) {
 			if (event.key == "Enter")
@@ -51,8 +53,8 @@ export default class	SignBtn{
 		let	isNumber = !isNaN(inputText);
 
 		if (this.#page.isSignIn())
-			new SignInAction(this, inputText, isNumber);
+			new SignInAction(this, this.wrongInputTextComp, inputText, isNumber);
 		else
-			new SignUpAction(this, inputText, isNumber);
+			new SignUpAction(this, this.wrongInputTextComp, inputText, isNumber);
 	}
 }
