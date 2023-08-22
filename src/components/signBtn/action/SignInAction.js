@@ -1,20 +1,19 @@
-import BaseLogger from "../../../crossCuttingConcerns/logging/baselogger.js";
 import Hash from "../../../modules/authantication/hash.js";
-import CustomerService from "../../../services/CustomerService.js";
+import WrongInputTextComponent from "../../wrongText/wrongInputText.js";
 import SignBtn from "../sign.js";
 import SignAction from "./SignAction.js";
 
 export default class	SignInAction extends SignAction {
 	/**
+	 * Construct this sign in action
 	 * 
-	 * @param {SignBtn} signBtn
-	 * @param {CustomerService} customerService 
-	 * @param {BaseLogger} loggerService 
-	 * @param {string} inputText 
-	 * @param {number} isNumber 
+	 * @param {SignBtn} signBtn for bind functions in the super class
+	 * @param {WrongInputTextComponent} wrongInputTextComp
+	 * @param {string} inputText given text
+	 * @param {number} isNumber is number or not? (email)
 	 */
-	constructor(signBtn, customerService, loggerService, inputText, isNumber) {
-		super(signBtn, customerService, loggerService, inputText, isNumber);
+	constructor(signBtn, wrongInputTextComp, inputText, isNumber) {
+		super(signBtn, wrongInputTextComp, inputText, isNumber);
 	}
 
 	/**
@@ -22,6 +21,7 @@ export default class	SignInAction extends SignAction {
 	 * Pure Virtual Method.
 	 */
 	generateAuthScene() {
+		this.loggerService.emailMatchLog(this.customer);
 
 		this.addWelcomeHeader()
 		
@@ -51,15 +51,17 @@ export default class	SignInAction extends SignAction {
 	authanticate() {
 		let	passwdInput = document.getElementById("passwdInput");
 
-		SignAction.removeWrongInputText();	
+		this.wrongInputTextComp.removeWrongInputText();	
 
 		if (passwdInput.value == "")
-			SignAction.generateWrongInput("Bir şifre girmelisin!");
+			this.wrongInputTextComp.generateWrongInput("Bir şifre girmelisin!");
 		// Voila
-		else if (Hash.calculateHash(passwdInput.value) == this.customerHash.hashPass)
+		else if (Hash.calculateHash(passwdInput.value) == this.customerHash.hashPass) {
+			this.loggerService.successfulLoginLog(this.customer);
 			this.#generateEntry();
+		}
 		else
-			SignAction.generateWrongInput("Hatalı Şifre!");
+			this.wrongInputTextComp.generateWrongInput("Hatalı Şifre!");
 	}
 
 	/**
