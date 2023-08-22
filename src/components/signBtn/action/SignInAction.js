@@ -76,7 +76,67 @@ export default class	SignInAction extends SignAction {
 		document.getElementById("authDiff").remove();
 
 		/* display identity */
+		let	identityRowDiv = this.displayIdentity();
 
+		// Add to container
+		let	containerDiv = document.getElementsByClassName("container")[0];
+		containerDiv.appendChild(identityRowDiv);
+
+		/* Hello text */
+		let	helloRowDiv = this.createHelloText();
+
+		// Add to container
+		containerDiv.insertBefore(helloRowDiv, identityRowDiv);
+
+		// horizontal ruler below of the hepsiburada header
+		let	hrElement = document.createElement("hr");
+
+		// add to container
+		containerDiv.insertBefore(hrElement, helloRowDiv);
+
+		/* Log out button */
+		let	buttonRowDiv = this.generateLogOutButton();
+
+		// add to the container
+		containerDiv.appendChild(buttonRowDiv);
+
+		// add a listener
+		document.getElementById("logOutBtn").addEventListener("click", function() {
+			location.reload();
+		});
+	}
+
+	/**
+	 * Log out button to return the log in page
+	 * @returns row of the button
+	 */
+	generateLogOutButton() {
+		// row
+		let	rowDiv = document.createElement("div");
+		rowDiv.classList.add("row", "m-5");
+
+		// col
+		let	colDiv = document.createElement("div");
+		colDiv.classList.add("col");
+		rowDiv.appendChild(colDiv);
+
+		// button
+		let	button = document.createElement("button");
+		button.classList.add("btn", "submit", "my-3");
+		button.type = "button";
+		button.innerText = "Çıkış yap";
+		button.id = "logOutBtn";
+		button.style.width = "200px"
+		colDiv.appendChild(button);
+
+		return (rowDiv);
+	}
+
+	/**
+	 * The identity list for success page
+	 * @return row of the list
+	 */
+	displayIdentity() {
 		// list items
 		let	liFirstName = document.createElement("li");
 		liFirstName.innerText = "First Name: " + this.customer.firstName;
@@ -104,18 +164,40 @@ export default class	SignInAction extends SignAction {
 
 		// row
 		let	rowDiv = document.createElement("div");
-		rowDiv.classList.add(["row", "align-items-center", "vh-100"]);
+		rowDiv.classList.add("row", "m-5");
 
 		// col
 		let	colDiv = document.createElement("div");
-		colDiv.classList.add(["col"]);
+		colDiv.classList.add("col");
 
 		// childs are connected
 		rowDiv.appendChild(colDiv);
 		colDiv.appendChild(uList);
 
-		let	containerDiv = document.getElementsByClassName("container")[0];
-		containerDiv.appendChild(rowDiv);
+		return (rowDiv);
+	}
+
+	/**
+	 * Hello text below the hepsiburada header for success page
+	 * @returns Row div for the text
+	 */
+	createHelloText() {
+		// row
+		let	rowDiv = document.createElement("div");
+		rowDiv.classList.add("row", "m-5");
+
+		// col
+		let	colDiv = document.createElement("div");
+		colDiv.classList.add("col");
+		rowDiv.appendChild(colDiv);
+
+		// text
+		let	helloText = document.createElement("h1");
+		helloText.classList.add("fs-2");
+		helloText.innerText = "Merhaba " + this.customer.firstName + "!";
+		colDiv.appendChild(helloText);
+
+		return (rowDiv);
 	}
 	
 	/**
@@ -159,17 +241,17 @@ export default class	SignInAction extends SignAction {
 		// back button
 		let	refreshPageButton = document.createElement("button");
 		refreshPageButton.id = "backButton";
-		refreshPageButton.classList.add(["btn"]);
+		refreshPageButton.classList.add("btn");
 		refreshPageButton.appendChild(refreshSvg);
 		refreshPageButton.type = "button";
 		
 		// row
 		let	rowDiv = document.createElement("div");
-		rowDiv.classList.add(["row"]);
+		rowDiv.classList.add("row");
 		
 		// col
 		let	colDiv = document.createElement("div");
-		colDiv.classList.add(["col-1"]);
+		colDiv.classList.add("col-1");
 		rowDiv.appendChild(colDiv);
 
 		// append email text
@@ -199,11 +281,11 @@ export default class	SignInAction extends SignAction {
 
 		// row
 		let	rowDiv = document.createElement("div");
-		rowDiv.classList.add(["row", "justify-content-center"]);
+		rowDiv.classList.add("row", "justify-content-center");
 		
 		// col
 		let	colDiv = document.createElement("div");
-		colDiv.classList.add(["col"]);
+		colDiv.classList.add("col");
 		rowDiv.appendChild(colDiv);
 
 		// append email text
@@ -222,7 +304,7 @@ export default class	SignInAction extends SignAction {
 	addWelcomeHeader() {
 		// Welcome Header
 		let	welcomeHeader = document.createElement("h1");
-		welcomeHeader.classList.add(["fs-3"]);
+		welcomeHeader.classList.add("fs-3");
 		welcomeHeader.innerText = "Hoş Geldiniz!";
 
 		// Get the radio buttons
