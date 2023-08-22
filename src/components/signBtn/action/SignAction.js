@@ -1,6 +1,5 @@
-import BaseLogger from "../../../crossCuttingConcerns/logging/baselogger.js";
-import CustomerService from "../../../services/CustomerService.js";
 import Check from "../../../modules/authantication/check.js";
+import WrongInputTextComponent from "../../wrongText/wrongInputText.js";
 
 /**
  * an abstract class
@@ -17,20 +16,21 @@ export default class	SignAction {
 	 * CustomerService for user validation.
 	 * Logger service for logging.
 	 * 
-	 * @param {CustomerService} customerService 
-	 * @param {BaseLogger} loggerService 
-	 * @param {string} inputText 
-	 * @param {number} isNumber 
+	 * @param {signBtn} signBtn to remove event listeners with bind functions
+	 * @param {WrongInputTextComponent} wrongInputTextComp
+	 * @param {string} inputText given text
+	 * @param {number} isNumber is a number or an email text
 	 */
-	constructor(signBtn, inputText, isNumber) {
+	constructor(signBtn, wrongInputTextComp, inputText, isNumber) {
 		this.customerService = signBtn.customerService;
 		this.loggerService = signBtn.loggerService;
 		this.inputText = inputText;
 		this.#isNumber = isNumber;
 		this.#signBtn = signBtn;
+		this.wrongInputTextComp = wrongInputTextComp;
 
 		// if there is a wrong input text, delete it
-		SignAction.removeWrongInputText();
+		this.wrongInputTextComp.removeWrongInputText();
 
 		if (isNumber)
 			this.#loggin(Check.checkNumberValidity);
@@ -79,14 +79,14 @@ export default class	SignAction {
 						return (false);
 					}.bind(this));
 				document.getElementById("signInSubmit").removeEventListener("click", this.#signBtn.boundInUp);
-				document.getElementById("noMailInput").removeEventListener("keyup", this.#signBtn.boundInUpEnter)
+				document.getElementById("noMailInput").removeEventListener("keyup", this.#signBtn.boundInUpEnter);
 				this.generateAuthScene();
 			}
 			else
-				SignAction.generateWrongInput("E-Mail veya Numara Eksik");
+				this.wrongInputTextComp.generateWrongInput("E-Mail veya Numara Eksik");
 		}
 		else
-			SignAction.generateWrongInput("E-Mail veya Numara Hatalı");
+			this.wrongInputTextComp.generateWrongInput("E-Mail veya Numara Hatalı");
 	}
 
 	/**
@@ -95,37 +95,5 @@ export default class	SignAction {
 	 */
 	generateAuthScene() {
 		throw	"Unimplemented Method";
-	}
-
-	/**
-	 * Generate a wrong input scene below the input
-	 * @param {string} msg 
-	 */
-	static	generateWrongInput(msg) {
-		if (!SignAction.isThereWrongInputText()) {
-			let	wrongInputText = document.createElement("p");
-			wrongInputText.classList.add("text-danger", "fw-semibold");
-			wrongInputText.innerText = msg;
-			wrongInputText.id = "wrongInputText"
-			
-			let	formCol = document.getElementById("mailInputGroup").parentElement;
-			formCol.appendChild(wrongInputText);
-		}
-	}
-
-	/**
-	 * 
-	 * @returns if there is any error, returns true
-	 */
-	static	isThereWrongInputText() {
-		return (document.getElementById("wrongInputText") != null);
-	}
-
-	/**
-	 * Remove the wrong input text if it is existing
-	 */
-	static	removeWrongInputText() {
-		if (SignAction.isThereWrongInputText())
-			document.getElementById("wrongInputText").remove();
 	}
 }
