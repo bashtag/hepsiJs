@@ -1,3 +1,4 @@
+import Check from "../../../modules/authantication/check.js";
 import Hash from "../../../modules/authantication/hash.js";
 import WrongInputTextComponent from "../../wrongText/wrongInputText.js";
 import SignBtn from "../sign.js";
@@ -14,6 +15,11 @@ export default class	SignInAction extends SignAction {
 	 */
 	constructor(signBtn, wrongInputTextComp, inputText, isNumber) {
 		super(signBtn, wrongInputTextComp, inputText, isNumber);
+
+		if (isNumber)
+			this.loggin(Check.checkNumberValidity);
+		else
+			this.loggin(Check.checkEmailValidity);
 	}
 
 	/**
@@ -23,13 +29,13 @@ export default class	SignInAction extends SignAction {
 	generateAuthScene() {
 		this.loggerService.emailMatchLog(this.customer);
 
-		this.addWelcomeHeader()
+		this.addWelcomeHeader();
 		
 		this.addEmailNoText();
 
-		this.addRefreshPage();
+		SignAction.addRefreshPage();
 
-		this.addBackButtonAction();
+		SignAction.addBackButtonAction();
 
 		this.addPasswdInput();
 
@@ -217,55 +223,6 @@ export default class	SignInAction extends SignAction {
 		mailForm.value = "";
 	}
 	
-	/**
-	 * Add an action to the back button
-	 */
-	addBackButtonAction() {
-		if (document.getElementById("backButton"))
-			document.getElementById("backButton").addEventListener("click", function() {
-				location.reload();
-			});
-	}
-
-	/**
-	 * Add back button
-	 * @returns If back-button is already there, it returns false.
-	 */
-	addRefreshPage() {
-		// check the button is there or not
-		if (document.getElementById("backButton"))
-			return (false);
-
-		// refresh page svg
-		let	refreshSvg = document.createElement("img");
-		refreshSvg.src = "assets/backButton.svg";
-
-		// back button
-		let	refreshPageButton = document.createElement("button");
-		refreshPageButton.id = "backButton";
-		refreshPageButton.classList.add("btn");
-		refreshPageButton.appendChild(refreshSvg);
-		refreshPageButton.type = "button";
-		
-		// row
-		let	rowDiv = document.createElement("div");
-		rowDiv.classList.add("row");
-		
-		// col
-		let	colDiv = document.createElement("div");
-		colDiv.classList.add("col-1");
-		rowDiv.appendChild(colDiv);
-
-		// append email text
-		colDiv.appendChild(refreshPageButton);
-
-		// get form
-		let	authForm = document.getElementById("authForm");
-		authForm.insertBefore(rowDiv, authForm.firstChild);
-
-		return (true);
-	}
-
 	/**
 	 * Add the email text below the welcome header
 	 * @returns If email text is already there, it returns false.
