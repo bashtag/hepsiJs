@@ -34,7 +34,7 @@ export default class	SignBtn{
 		// sign button
 		document.getElementById("signInSubmit").addEventListener("click", this.boundInUp);
 		// enter key event
-		document.getElementById("noMailInput").addEventListener("keyup", this.boundInUpEnter)
+		document.getElementById("noMailInput").addEventListener("keyup", this.boundInUpEnter);
 
 		// form enter key event was reloading the page before this code
 		document.getElementById("authForm").addEventListener("submit", function(event) {
