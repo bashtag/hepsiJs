@@ -34,18 +34,18 @@ export default class	CustomerService {
 	 */
 	#load() {
 		for (const user of users)
-			this.#addCustomers(user);
+			this.addCustomer(user);
 		
 		for (const hash of hashes)
-			this.#addHashes(hash);
+			this.addHash(hash);
 	}
 
 	/**
 	 * Add Customers to the Customer List
 	 * @param {Customer} customer 
 	 */
-	#addCustomers(customer) {
-		if (!this.#checkCustomerValidityForErrors(customer))
+	addCustomer(customer) {
+		if (!this.checkCustomerValidityForErrors(customer))
 			this.#customers.push(customer);
 
 		this.#loggerService.addLog(customer);
@@ -56,7 +56,7 @@ export default class	CustomerService {
 	 * If there will be a problem, then DataError occurs in of errors list
 	 * @param {Customer} customer 
 	 */
-	#checkCustomerValidityForErrors(customer) {
+	checkCustomerValidityForErrors(customer) {
 		let	required = "id firstName lastName email number birthDate city"
 		let	requiredFields = required.split(" ");
 		let	hasErrors = false;
@@ -80,8 +80,8 @@ export default class	CustomerService {
 	 * Add hashes to the hash list
 	 * @param {Hash} hash 
 	 */
-	#addHashes(hash) {
-		if (!this.#checkHashValidityForErrors(hash))
+	addHash(hash) {
+		if (!this.checkHashValidityForErrors(hash))
 			this.#passwdHashes.push(hash);
 
 		this.#loggerService.addLog(hash);
@@ -91,7 +91,7 @@ export default class	CustomerService {
 	 * Check Hash object validity
 	 * @param {Hash} hash 
 	 */
-	#checkHashValidityForErrors(hash) {
+	checkHashValidityForErrors(hash) {
 		let	hasErrors = false;
 
 		if (hash["id"] === undefined) {
