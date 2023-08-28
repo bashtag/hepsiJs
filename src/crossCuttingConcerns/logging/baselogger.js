@@ -16,10 +16,21 @@ export default class	BaseLogger {
 	}
 
 	/**
-	 * Log for input
+	 * Log for wrong input
+	 * 
+	 * @param {string} msg 
 	 */
-	inputLog(msg) {
+	wrongInputLog(msg) {
 		console.log("(Wrong Input)", this.logger, ":", msg);
+	}
+
+	/**
+	 * Log for successful input
+	 * 
+	 * @param {string} msg 
+	 */
+	successfulInputLog(msg) {
+		console.log("(Successful Input)", this.logger, ":", msg);
 	}
 
 	/**
