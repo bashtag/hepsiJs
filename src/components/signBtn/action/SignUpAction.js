@@ -1,16 +1,25 @@
 import Check from "../../../modules/authantication/check.js";
+import Hash from "../../../modules/authantication/hash.js";
+import Customer from "../../../modules/customer.js";
+import WarningComponent from "../../warningText/warningComp.js";
+import WrongInputWarningComponent from "../../warningText/wrongInputWarning.js";
+import SuccessfulInputWarningComponent from "../../warningText/successfulInputWarning.js"
 import SignAction from "./SignAction.js";
-import SignInAction from "./SignInAction.js";
 
 export default class	SignUpAction extends SignAction {
 	
 	/**
-	 * 
+	 * Constructor of SignUpAction
+	 * Creates a login form and register the customer to the customer service if it is necessary.
+	 * @param {SignBtn} signBtn 
+	 * @param {SuccessfulInputWarningComponent} successfulInputWarningComp
+	 * @param {WrongInputWarningComponent} wrongInputWarningComp 
 	 * @param {string} inputText 
 	 * @param {number} isNumber 
 	 */
-	constructor(signBtn, wrongInputTextComp, inputText, isNumber) {
-		super(signBtn, wrongInputTextComp, inputText, isNumber);
+	constructor(signBtn, wrongInputWarningComp, successfulInputWarningComp, inputText, isNumber) {
+		super(signBtn, wrongInputWarningComp, inputText, isNumber);
+		this.successfulInputWarningComp = successfulInputWarningComp;
 
 		if (isNumber)
 			this.signUp(Check.checkNumberValidity);
@@ -36,6 +45,85 @@ export default class	SignUpAction extends SignAction {
 
 		// change the go on button's writing
 		document.getElementById("signInSubmit").innerText = "Kayıt ol";
+
+		// bind functions
+		this.boundAddToService = this.addToCustomerService.bind(this);
+		this.boundAddToServiceEnter = function(event) {
+				if (event.key == "Enter")
+					this.addToCustomerService();
+			}.bind(this);
+
+		// Submit button click
+		document.getElementById("signInSubmit").addEventListener("click", this.boundAddToService);
+		
+		// Enter key press
+		let	inputFields = document.querySelectorAll(".form-control");
+		inputFields.forEach(function(inputField) {
+				inputField.addEventListener("keyup", this.boundAddToServiceEnter);
+			}.bind(this))
+
+	}
+
+	/**
+	 * if all the inputs are correct,
+	 * then add this customer to the customer service object.
+	 */
+	addToCustomerService() {
+		// firstly remove the wrong input text
+		WarningComponent.removeAllTheWarnings();
+
+		// new customer property values
+		let	firstName = document.getElementById("firstNameInput").value;
+		let	lastName = document.getElementById("lastNameInput").value;
+		let	number = document.getElementById("numberInput").value;
+		let	birthDate = document.getElementById("birthDateInput").value;
+		let	city = document.getElementById("cityInput").value;
+		let	passwd = document.getElementById("passwdInput").value;
+
+		// new customer id
+		let	customerList = this.customerService.getCustomerList();
+		let	newCustomerId  = customerList[customerList.length - 1].id + 1;
+
+		// new customer
+		let	customer = new Customer(newCustomerId, firstName, lastName,
+			this.inputText, number, birthDate, city);
+
+		// passwd hash
+		let	hash = new Hash(newCustomerId, passwd);
+
+		// blank input check
+		let	isThereABlankInput = (passwd == "");
+		let	customerValues = Object.values(customer);
+		customerValues.forEach(value => {
+				if (value == "")
+					isThereABlankInput = true;
+			})
+
+		// Is there any same email on the customerService?
+		let	isThereAnyMatchingEmail = this.customerService.getCustomerList().find(function(customer) {
+				if (customer.email == this.inputText)
+					return (true);
+				return (false);
+			}.bind(this)) != undefined;
+
+		if (isThereABlankInput)
+			this.wrongInputWarningComp.generateWarning("Bir şeyler eksik!");
+		else if (isThereAnyMatchingEmail)
+			this.wrongInputWarningComp.generateWarning("Aynı email ile bir daha kayıt olamazsın!");
+		// success
+		else if (!this.customerService.checkCustomerValidityForErrors(customer) &&
+			!this.customerService.checkHashValidityForErrors(hash)) {
+			this.customerService.addCustomer(customer);
+			this.customerService.addHash(hash);
+
+			this.successfulInputWarningComp.generateWarning("Başarıyla kayıt oldunuz!");
+
+			console.log(customerList);
+			console.log(this.customerService.getHashList())
+		}
+		else {
+			this.wrongInputWarningComp.generateWarning("Bir şeyler yanlış ya da eksik!");
+		}
 	}
 
 	/**
@@ -44,31 +132,45 @@ export default class	SignUpAction extends SignAction {
 	createForm() {
 		let	passwdInput = document.getElementById("noMailInput");
 		passwdInput.value = "";
+		passwdInput.classList.add("my-3");
+		passwdInput.style.height = "50px";
 
 		// first name input
 		let	firstNameInput = passwdInput.cloneNode(true);
 		firstNameInput.id = "firstNameInput";
-
+		firstNameInput.placeholder = "İsim";
+		
 		let	lastNameInput = passwdInput.cloneNode(true);
 		lastNameInput.id = "lastNameInput";
+		lastNameInput.placeholder = "Soyisim";
 
 		let	numberInput = passwdInput.cloneNode(true);
 		numberInput.id = "numberInput";
+		numberInput.placeholder = "Cep Telefon Numarası";
+		numberInput.type = "tel"
+
+		let	birthDateInput = passwdInput.cloneNode(true);
+		birthDateInput.id = "birthDateInput";
+		birthDateInput.placeholder = "Doğum Yılı";
+		birthDateInput.type = "number";
+		birthDateInput.min = "1900";
+		birthDateInput.max = "2100";
+		birthDateInput.step = "1";
 
 		let	cityInput = passwdInput.cloneNode(true);
 		cityInput.id = "cityInput";
+		cityInput.placeholder = "Şehir";
 
 
 		// now this is an password input
 		passwdInput.type = "password";
 		passwdInput.id = "passwdInput";
 		passwdInput.placeholder = "Şifre";
-
-
 		
 		passwdInput.parentNode.insertBefore(firstNameInput, passwdInput);
 		passwdInput.parentNode.insertBefore(lastNameInput, passwdInput);
 		passwdInput.parentNode.insertBefore(numberInput, passwdInput);
+		passwdInput.parentNode.insertBefore(birthDateInput, passwdInput);
 		passwdInput.parentNode.insertBefore(cityInput, passwdInput);
 	}
 
@@ -78,8 +180,8 @@ export default class	SignUpAction extends SignAction {
 	addHelloHeader() {
 		// Hello
 		let	helloWriting = document.createElement("h1");
-		helloWriting.classList.add("fs-3");
-		helloWriting.innerText = "Merhaba!";
+		helloWriting.classList.add("fs-3", "mt-3");
+		helloWriting.innerText = "Merhaba Yeni Kullanıcı!";
 
 		// Get the radio buttons
 		let	radioButtons = document.getElementById("signRadios");
