@@ -1,6 +1,7 @@
 import Check from "../../../modules/authantication/check.js";
 import Hash from "../../../modules/authantication/hash.js";
-import WrongInputTextComponent from "../../wrongText/wrongInputText.js";
+import WarningComponent from "../../warningText/warningComp.js";
+import WrongInputWarningComponent from "../../warningText/wrongInputWarning.js";
 import SignBtn from "../sign.js";
 import SignAction from "./SignAction.js";
 
@@ -9,12 +10,12 @@ export default class	SignInAction extends SignAction {
 	 * Construct this sign in action
 	 * 
 	 * @param {SignBtn} signBtn for bind functions in the super class
-	 * @param {WrongInputTextComponent} wrongInputTextComp
+	 * @param {WrongInputWarningComponent} wrongInputWarningComp
 	 * @param {string} inputText given text
 	 * @param {number} isNumber is number or not? (email)
 	 */
-	constructor(signBtn, wrongInputTextComp, inputText, isNumber) {
-		super(signBtn, wrongInputTextComp, inputText, isNumber);
+	constructor(signBtn, wrongInputWarningComp, inputText, isNumber) {
+		super(signBtn, wrongInputWarningComp, inputText, isNumber);
 
 		if (isNumber)
 			this.loggin(Check.checkNumberValidity);
@@ -57,17 +58,17 @@ export default class	SignInAction extends SignAction {
 	authanticate() {
 		let	passwdInput = document.getElementById("passwdInput");
 
-		this.wrongInputTextComp.removeWrongInputText();	
+		WarningComponent.removeAllTheWarnings();
 
 		if (passwdInput.value == "")
-			this.wrongInputTextComp.generateWrongInput("Bir şifre girmelisin!");
+			this.wrongInputWarningComp.generateWarning("Bir şifre girmelisin!");
 		// Voila
 		else if (Hash.calculateHash(passwdInput.value) == this.customerHash.hashPass) {
 			this.loggerService.successfulLoginLog(this.customer);
 			this.#generateEntry();
 		}
 		else
-			this.wrongInputTextComp.generateWrongInput("Hatalı Şifre!");
+			this.wrongInputWarningComp.generateWarning("Hatalı Şifre!");
 	}
 
 	/**

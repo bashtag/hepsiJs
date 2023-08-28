@@ -1,4 +1,5 @@
-import WrongInputTextComponent from "../../wrongText/wrongInputText.js";
+import WarningComponent from "../../warningText/warningComp.js";
+import WrongInputWarningComponent from "../../warningText/wrongInputWarning.js";
 
 /**
  * an abstract class
@@ -16,20 +17,20 @@ export default class	SignAction {
 	 * Logger service for logging.
 	 * 
 	 * @param {signBtn} signBtn to remove event listeners with bind functions
-	 * @param {WrongInputTextComponent} wrongInputTextComp
+	 * @param {WrongInputWarningComponent} wrongInputWarningComp
 	 * @param {string} inputText given text
 	 * @param {number} isNumber is a number or an email text
 	 */
-	constructor(signBtn, wrongInputTextComp, inputText, isNumber) {
+	constructor(signBtn, wrongInputWarningComp, inputText, isNumber) {
 		this.customerService = signBtn.customerService;
 		this.loggerService = signBtn.loggerService;
 		this.inputText = inputText;
 		this.#isNumber = isNumber;
 		this.#signBtn = signBtn;
-		this.wrongInputTextComp = wrongInputTextComp;
+		this.wrongInputWarningComp = wrongInputWarningComp;
 
-		// if there is a wrong input text, delete it
-		this.wrongInputTextComp.removeWrongInputText();
+		// if there is a warning, delete it
+		WarningComponent.removeAllTheWarnings();
 	}
 
 	/**
@@ -47,10 +48,10 @@ export default class	SignAction {
 				this.generateAuthScene();
 			}
 			else
-				this.wrongInputTextComp.generateWrongInput("E-Mail veya Numara Mevcut");
+				this.wrongInputWarningComp.generateWarning("E-Mail veya Numara Mevcut");
 		}
 		else
-			this.wrongInputTextComp.generateWrongInput("E-Mail veya Numara Hatalı");
+			this.wrongInputWarningComp.generateWarning("E-Mail veya Numara Hatalı");
 	}
 
 	/**
@@ -97,10 +98,10 @@ export default class	SignAction {
 				this.generateAuthScene();
 			}
 			else
-				this.wrongInputTextComp.generateWrongInput("E-Mail veya Numara Eksik");
+				this.wrongInputWarningComp.generateWarning("E-Mail veya Numara Eksik");
 		}
 		else
-			this.wrongInputTextComp.generateWrongInput("E-Mail veya Numara Hatalı");
+			this.wrongInputWarningComp.generateWarning("E-Mail veya Numara Hatalı");
 	}
 
 	/**

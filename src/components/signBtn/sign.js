@@ -1,7 +1,8 @@
 import BaseLogger from "../../crossCuttingConcerns/logging/baselogger.js";
 import Page from "../../modules/page.js";
 import CustomerService from "../../services/CustomerService.js";
-import WrongInputTextComponent from "../wrongText/wrongInputText.js";
+import SuccessfulInputWarningComponent from "../warningText/successfulInputWarning.js";
+import WrongInputWarningComponent from "../warningText/wrongInputWarning.js";
 import SignInAction from "./action/SignInAction.js"
 import SignUpAction from "./action/SignUpAction.js"
 
@@ -10,8 +11,6 @@ export default class	SignBtn{
 
 	// in-up info
 	#page;
-	// Errors
-	#errors = []
 
 	/**
 	 * Creates a Sign Button Action
@@ -24,7 +23,11 @@ export default class	SignBtn{
 		this.#page = page;
 		this.customerService = customerService;
 		this.loggerService = loggerService;
-		this.wrongInputTextComp = new WrongInputTextComponent(this.loggerService);
+		// warning component objects
+		this.wrongInputWarningComp = new WrongInputWarningComponent(this.loggerService);
+		this.successfulInputWarningComp = new SuccessfulInputWarningComponent(this.loggerService);
+
+		// to bind functions
 		this.boundInUp = this.signInUp.bind(this);
 		this.boundInUpEnter = function(event) {
 			if (event.key == "Enter")
@@ -53,8 +56,8 @@ export default class	SignBtn{
 		let	isNumber = !isNaN(inputText);
 
 		if (this.#page.isSignIn())
-			new SignInAction(this, this.wrongInputTextComp, inputText, isNumber);
+			new SignInAction(this, this.wrongInputWarningComp, inputText, isNumber);
 		else
-			new SignUpAction(this, this.wrongInputTextComp, inputText, isNumber);
+			new SignUpAction(this, this.wrongInputWarningComp, this.successfulInputWarningComp, inputText, isNumber);
 	}
 }
